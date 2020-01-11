@@ -130,10 +130,14 @@ export const postRegister = wrapAsync(
  *
  */
 export const currentUser = wrapAsync(
-  async (_req: Request, res: Response): Promise<void> => {
+  async (req: Request, res: Response): Promise<void> => {
+    const user = req.currentUser as IUserDocument;
+
     res.json({
       success: true,
-      data: {}
+      data: {
+        userid: user._id
+      }
     });
   }
 );

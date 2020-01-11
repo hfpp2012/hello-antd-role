@@ -90,7 +90,7 @@ class Login extends Component<LoginProps, LoginState> {
 
   render() {
     const { userLogin = {}, submitting } = this.props;
-    const { status, type: loginType } = userLogin;
+    const { success } = userLogin;
     const { type, autoLogin } = this.state;
     return (
       <div className={styles.main}>
@@ -103,8 +103,7 @@ class Login extends Component<LoginProps, LoginState> {
           }}
         >
           <Tab key="account" tab={formatMessage({ id: 'user-login.login.tab-login-credentials' })}>
-            {status === 'error' &&
-              loginType === 'account' &&
+            {success === false &&
               !submitting &&
               this.renderMessage(
                 formatMessage({ id: 'user-login.login.message-invalid-credentials' }),
@@ -137,8 +136,7 @@ class Login extends Component<LoginProps, LoginState> {
             />
           </Tab>
           <Tab key="mobile" tab={formatMessage({ id: 'user-login.login.tab-login-mobile' })}>
-            {status === 'error' &&
-              loginType === 'mobile' &&
+            {success === false &&
               !submitting &&
               this.renderMessage(
                 formatMessage({ id: 'user-login.login.message-invalid-verification-code' }),

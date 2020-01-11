@@ -8,9 +8,7 @@ import { getPageQuery } from '@/utils/utils';
 import { message } from 'antd';
 
 export interface StateType {
-  status?: 'ok' | 'error';
-  type?: string;
-  currentAuthority?: 'user' | 'guest' | 'admin';
+  success?: boolean | null | undefined;
 }
 
 export interface LoginModelType {
@@ -30,7 +28,7 @@ const Model: LoginModelType = {
   namespace: 'login',
 
   state: {
-    status: undefined,
+    success: null,
   },
 
   effects: {
@@ -60,10 +58,18 @@ const Model: LoginModelType = {
               return;
             }
           }
+
+          localStorage.setItem('token', response.data.token);
+
           router.replace(redirect || '/');
         }
       } catch (e) {
         message.error(e.data.message);
+
+        yield put({
+          type: 'changeLoginStatus',
+          payload: e.data,
+        });
       }
     },
 
@@ -90,8 +96,7 @@ const Model: LoginModelType = {
       // setAuthority(payload.currentAuthority);
       return {
         ...state,
-        status: payload.status,
-        type: payload.type,
+        success: payload.success,
       };
     },
   },
