@@ -136,7 +136,10 @@ export const currentUser = wrapAsync(
     res.json({
       success: true,
       data: {
-        userid: user._id
+        userid: user._id,
+        name: user.username,
+        avatar:
+          "https://www.qiuzhi99.com/assets/logo-f46be81047e24aa656ea1048aa0c078e6168bb324c3df36506c014c1be677235.png"
       }
     });
   }
