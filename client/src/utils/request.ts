@@ -50,6 +50,7 @@ const errorHandler = (error: { response: Response }): Response | void => {
     (<any>window).g_app._store.dispatch({
       type: 'login/logout',
     });
+    window.location.reload();
     return;
   }
 

@@ -111,7 +111,7 @@ export default {
               name: 'admin',
               icon: 'crown',
               component: './Admin',
-              authority: ['admin'],
+              authority: ['user'],
             },
             {
               component: './404',
