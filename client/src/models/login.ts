@@ -6,6 +6,7 @@ import router from 'umi/router';
 import { fakeAccountLogin, getFakeCaptcha } from '@/services/login';
 import { getPageQuery } from '@/utils/utils';
 import { message } from 'antd';
+import { reloadAuthorized } from '@/utils/Authorized';
 
 export interface StateType {
   success?: boolean | null | undefined;
@@ -60,6 +61,8 @@ const Model: LoginModelType = {
           }
 
           localStorage.setItem('token', response.data.token);
+
+          reloadAuthorized();
 
           router.replace(redirect || '/');
         }
