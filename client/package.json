@@ -28,11 +28,6 @@
     "tsc": "tsc",
     "ui": "umi ui"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint-staged"
-    }
-  },
   "lint-staged": {
     "**/*.less": "stylelint --syntax less",
     "**/*.{js,jsx,tsx,ts,less,md,json}": [
@@ -48,7 +43,10 @@
     "not ie <= 10"
   ],
   "dependencies": {
+    "@ant-design/compatible": "^0.0.1-rc.0",
+    "@ant-design/icons": "^4.0.0-rc.0",
     "@ant-design/pro-layout": "^4.10.0",
+    "@ant-design/pro-table": "^1.0.22",
     "@antv/data-set": "^0.10.2",
     "@types/jwt-decode": "^2.2.1",
     "antd": "^3.23.6",
