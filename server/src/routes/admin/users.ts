@@ -1,20 +1,15 @@
 import express, { Router } from "express";
 import * as usersController from "../../controllers/admin/users";
 import checkAdminAuthMiddleware from "../../middlewares/admin/check-auth.middleware";
-import allow from "../../middlewares/admin/role.middleware";
 
 const router: Router = express.Router();
 
 router.post("/login", usersController.postLogin);
 
 router
-  .get(
-    "/",
-    checkAdminAuthMiddleware,
-    allow("read admin"),
-    usersController.index
-  )
-  .post("/", checkAdminAuthMiddleware, usersController.addAdmin);
+  .get("/", checkAdminAuthMiddleware, usersController.index)
+  .post("/", checkAdminAuthMiddleware, usersController.addAdmin)
+  .get("/currentUser", checkAdminAuthMiddleware, usersController.currentUser);
 
 router.put("/:id", usersController.updateAdmin);
 

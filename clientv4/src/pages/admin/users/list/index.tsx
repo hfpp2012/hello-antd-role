@@ -6,7 +6,8 @@ import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import CreateForm from './components/CreateForm';
 import UpdateForm, { FormValueType } from './components/UpdateForm';
 import { TableListItem } from './data.d';
-import { queryRule, updateRule, addRule } from './service';
+import { queryUsers, updateRule, addRule } from './service';
+import moment from 'moment';
 
 /**
  * 添加节点
@@ -33,7 +34,7 @@ const handleAdd = async (fields: FormValueType) => {
  * @param fields
  */
 const handleUpdate = async (fields: FormValueType) => {
-  const hide = message.loading('正在配置');
+  const hide = message.loading('正在修改');
   try {
     await updateRule({
       name: fields.name,
@@ -42,50 +43,42 @@ const handleUpdate = async (fields: FormValueType) => {
     });
     hide();
 
-    message.success('配置成功');
+    message.success('修改成功');
     return true;
   } catch (error) {
     hide();
-    message.error('配置失败请重试！');
+    message.error('修改失败请重试！');
     return false;
   }
 };
 
 const TableList: React.FC<{}> = () => {
-  const [sorter, setSorter] = useState({});
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
   const [stepFormValues, setStepFormValues] = useState({});
   const actionRef = useRef<ActionType>();
   const columns: ProColumns<TableListItem>[] = [
     {
-      title: '规则名称',
-      dataIndex: 'name',
+      title: '用户名',
+      dataIndex: 'username',
     },
     {
-      title: '描述',
-      dataIndex: 'desc',
+      title: '角色',
+      dataIndex: 'roles',
     },
     {
-      title: '服务调用次数',
-      dataIndex: 'callNo',
-      sorter: true,
-      renderText: (val: string) => `${val} 万`,
+      title: '是否是超级管理员',
+      dataIndex: 'isAdmin',
+      renderText: (val: string) => (val ? '是' : '否'),
     },
     {
-      title: '状态',
-      dataIndex: 'status',
-      valueEnum: {
-        0: { text: '关闭', status: 'Default' },
-        1: { text: '运行中', status: 'Processing' },
-        2: { text: '已上线', status: 'Success' },
-        3: { text: '异常', status: 'Error' },
-      },
+      title: '创建时间',
+      dataIndex: 'createdAt',
+      renderText: (val: string) => moment(val).fromNow(),
     },
     {
-      title: '上次调度时间',
+      title: '更新时间',
       dataIndex: 'updatedAt',
-      sorter: true,
       valueType: 'dateTime',
     },
     {
@@ -100,10 +93,10 @@ const TableList: React.FC<{}> = () => {
               setStepFormValues(record);
             }}
           >
-            配置
+            修改
           </a>
           <Divider type="vertical" />
-          <a href="">订阅警报</a>
+          <a href="">分配角色</a>
         </>
       ),
     },
@@ -113,20 +106,15 @@ const TableList: React.FC<{}> = () => {
     <PageHeaderWrapper>
       <ProTable<TableListItem>
         actionRef={actionRef}
-        rowKey="key"
-        onChange={(_, _filter, _sorter) => {
-          setSorter(`${_sorter.field}_${_sorter.order}`);
-        }}
-        params={{
-          sorter,
-        }}
+        rowKey="_id"
         toolBarRender={(action, { selectedRows }) => [
           <Button type="primary" onClick={() => handleModalVisible(true)}>
             <PlusOutlined /> 新建
           </Button>,
         ]}
+        pagination={false}
         search={false}
-        request={params => queryRule(params)}
+        request={params => queryUsers(params)}
         columns={columns}
       />
       <CreateForm

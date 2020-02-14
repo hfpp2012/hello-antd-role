@@ -6,7 +6,7 @@ import { UNPROCESSABLE_ENTITY } from "http-status-codes";
 
 import bcrypt from "bcryptjs";
 
-import Admin from "../../models/Admin";
+import Admin, { IAdminDocument } from "../../models/Admin";
 
 import { throwAdminNotFoundError } from "../../utils/throwError";
 
@@ -72,9 +72,7 @@ export const index = wrapAsync(
 
     res.json({
       success: true,
-      data: {
-        admins
-      }
+      data: admins
     });
   }
 );
@@ -227,5 +225,28 @@ export const roles = wrapAsync(
         }
       });
     }
+  }
+);
+
+/**
+ * Current User
+ *
+ * @Method GET
+ * @URL /api/admin/users/currentUser
+ *
+ */
+export const currentUser = wrapAsync(
+  async (req: Request, res: Response): Promise<void> => {
+    const admin = req.currentAdmin as IAdminDocument;
+
+    res.json({
+      success: true,
+      data: {
+        userid: admin._id,
+        name: admin.username,
+        avatar:
+          "https://www.qiuzhi99.com/assets/logo-f46be81047e24aa656ea1048aa0c078e6168bb324c3df36506c014c1be677235.png"
+      }
+    });
   }
 );
