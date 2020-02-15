@@ -5,19 +5,20 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import CreateForm from './components/CreateForm';
 import UpdateForm, { FormValueType } from './components/UpdateForm';
-import { TableListItem } from './data.d';
-import { queryUsers, updateRule, addRule } from './service';
+import { TableListItem, CreateParams } from './data.d';
+import { queryUsers, updateRule, addUser } from './service';
 import moment from 'moment';
 
 /**
  * 添加节点
  * @param fields
  */
-const handleAdd = async (fields: FormValueType) => {
+const handleAdd = async (fields: CreateParams) => {
   const hide = message.loading('正在添加');
   try {
-    await addRule({
-      desc: fields.desc,
+    await addUser({
+      username: fields.username,
+      password: fields.password,
     });
     hide();
     message.success('添加成功');

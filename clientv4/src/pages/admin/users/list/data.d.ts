@@ -34,3 +34,8 @@ export interface TableListParams {
   pageSize?: number;
   currentPage?: number;
 }
+
+export interface CreateParams {
+  username: string;
+  password: string;
+}

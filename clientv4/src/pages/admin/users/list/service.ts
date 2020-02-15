@@ -1,5 +1,5 @@
 import request from '@/utils/request';
-import { TableListParams } from './data.d';
+import { TableListParams, CreateParams } from './data.d';
 
 export async function queryUsers(params?: TableListParams) {
   return request('/admin/users', {
@@ -17,12 +17,11 @@ export async function removeRule(params: { key: number[] }) {
   });
 }
 
-export async function addRule(params: TableListParams) {
-  return request('/api/rule', {
+export async function addUser(params: CreateParams) {
+  return request('/admin/users', {
     method: 'POST',
     data: {
       ...params,
-      method: 'post',
     },
   });
 }
