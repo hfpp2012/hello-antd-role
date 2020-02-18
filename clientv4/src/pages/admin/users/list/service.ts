@@ -1,19 +1,10 @@
 import request from '@/utils/request';
 import { TableListParams, CreateParams } from './data.d';
+import { FormValueType } from './components/UpdateForm';
 
 export async function queryUsers(params?: TableListParams) {
   return request('/admin/users', {
     params,
-  });
-}
-
-export async function removeRule(params: { key: number[] }) {
-  return request('/api/rule', {
-    method: 'POST',
-    data: {
-      ...params,
-      method: 'delete',
-    },
   });
 }
 
@@ -26,12 +17,11 @@ export async function addUser(params: CreateParams) {
   });
 }
 
-export async function updateRule(params: TableListParams) {
-  return request('/api/rule', {
-    method: 'POST',
+export async function updateUser(params: FormValueType) {
+  return request(`/admin/users/${params._id}`, {
+    method: 'PUT',
     data: {
       ...params,
-      method: 'update',
     },
   });
 }

@@ -44,7 +44,7 @@ const CreateForm: React.FC<CreateFormProps> = props => {
           name="password"
           rules={[{ required: true, message: '请输入密码！', min: 6 }]}
         >
-          <Input.Password placeholder="请输入" />
+          <Input placeholder="请输入" />
         </FormItem>
       </Form>
     </Modal>

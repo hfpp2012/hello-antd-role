@@ -6,7 +6,7 @@ import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import CreateForm from './components/CreateForm';
 import UpdateForm, { FormValueType } from './components/UpdateForm';
 import { TableListItem, CreateParams } from './data.d';
-import { queryUsers, updateRule, addUser } from './service';
+import { queryUsers, updateUser, addUser } from './service';
 import moment from 'moment';
 
 /**
@@ -37,10 +37,10 @@ const handleAdd = async (fields: CreateParams) => {
 const handleUpdate = async (fields: FormValueType) => {
   const hide = message.loading('正在修改');
   try {
-    await updateRule({
-      name: fields.name,
-      desc: fields.desc,
-      key: fields.key,
+    await updateUser({
+      _id: fields._id,
+      username: fields.username,
+      password: fields.password,
     });
     hide();
 
