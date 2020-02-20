@@ -4,6 +4,7 @@ export default {
   'menu.home': '首页',
   'menu.admin': '授权管理',
   'menu.admin.users': '员工管理',
+  'menu.admin.roles': '角色管理',
   'menu.login': '登录',
   'menu.register': '注册',
   'menu.register.result': '注册结果',

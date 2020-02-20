@@ -6,7 +6,7 @@ import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import CreateForm from './components/CreateForm';
 import UpdateForm, { FormValueType } from './components/UpdateForm';
 import { TableListItem, CreateParams } from './data.d';
-import { queryUsers, updateUser, addUser } from './service';
+import { queryRoles, updateRole, addRole } from './service';
 import moment from 'moment';
 
 /**
@@ -16,9 +16,9 @@ import moment from 'moment';
 const handleAdd = async (fields: CreateParams) => {
   const hide = message.loading('正在添加');
   try {
-    await addUser({
-      username: fields.username,
-      password: fields.password,
+    await addRole({
+      name: fields.name,
+      nameCn: fields.nameCn,
     });
     hide();
     message.success('添加成功');
@@ -37,10 +37,10 @@ const handleAdd = async (fields: CreateParams) => {
 const handleUpdate = async (fields: FormValueType) => {
   const hide = message.loading('正在修改');
   try {
-    await updateUser({
+    await updateRole({
       _id: fields._id,
-      username: fields.username,
-      password: fields.password,
+      name: fields.name,
+      nameCn: fields.nameCn,
     });
     hide();
 
@@ -60,17 +60,16 @@ const TableList: React.FC<{}> = () => {
   const actionRef = useRef<ActionType>();
   const columns: ProColumns<TableListItem>[] = [
     {
-      title: '用户名',
-      dataIndex: 'username',
+      title: '名称',
+      dataIndex: 'name',
     },
     {
-      title: '角色',
-      dataIndex: 'roles',
+      title: '标识符',
+      dataIndex: 'nameCn',
     },
     {
-      title: '是否是超级管理员',
-      dataIndex: 'isAdmin',
-      renderText: (val: string) => (val ? '是' : '否'),
+      title: '权限列表',
+      dataIndex: 'permissions',
     },
     {
       title: '创建时间',
@@ -97,7 +96,7 @@ const TableList: React.FC<{}> = () => {
             修改
           </a>
           <Divider type="vertical" />
-          <a href="">分配角色</a>
+          <a href="">分配权限</a>
         </>
       ),
     },
@@ -115,7 +114,7 @@ const TableList: React.FC<{}> = () => {
         ]}
         pagination={false}
         search={false}
-        request={params => queryUsers()}
+        request={params => queryRoles()}
         columns={columns}
       />
       <CreateForm

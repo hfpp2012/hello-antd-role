@@ -118,6 +118,12 @@ export default {
                   path: '/admin/users',
                   component: './admin/users/list',
                 },
+                {
+                  name: 'roles',
+                  icon: 'table',
+                  path: '/admin/roles',
+                  component: './admin/roles/list',
+                },
               ],
             },
 

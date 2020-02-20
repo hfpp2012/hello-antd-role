@@ -18,9 +18,7 @@ export const index = wrapAsync(
 
     res.json({
       success: true,
-      data: {
-        roles
-      }
+      data: roles
     });
   }
 );
