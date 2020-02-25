@@ -87,7 +87,7 @@ const UpdateForm: React.FC<UpdateFormProps> = props => {
       width={640}
       bodyStyle={{ padding: '32px 40px 48px' }}
       destroyOnClose
-      title="修改角色"
+      title="修改权限"
       visible={updateModalVisible}
       footer={renderFooter()}
       onCancel={() => handleUpdateModalVisible(false, values)}

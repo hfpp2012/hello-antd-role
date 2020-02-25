@@ -6,7 +6,7 @@ import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import CreateForm from './components/CreateForm';
 import UpdateForm, { FormValueType } from './components/UpdateForm';
 import { TableListItem, CreateParams } from './data.d';
-import { queryRoles, updateRole, addRole } from './service';
+import { queryPermissions, updatePermission, addPermission } from './service';
 import moment from 'moment';
 
 /**
@@ -16,7 +16,7 @@ import moment from 'moment';
 const handleAdd = async (fields: CreateParams) => {
   const hide = message.loading('正在添加');
   try {
-    await addRole({
+    await addPermission({
       name: fields.name,
       nameCn: fields.nameCn,
     });
@@ -37,7 +37,7 @@ const handleAdd = async (fields: CreateParams) => {
 const handleUpdate = async (fields: FormValueType) => {
   const hide = message.loading('正在修改');
   try {
-    await updateRole({
+    await updatePermission({
       _id: fields._id,
       name: fields.name,
       nameCn: fields.nameCn,
@@ -68,10 +68,6 @@ const TableList: React.FC<{}> = () => {
       dataIndex: 'nameCn',
     },
     {
-      title: '权限列表',
-      dataIndex: 'permissions',
-    },
-    {
       title: '创建时间',
       dataIndex: 'createdAt',
       renderText: (val: string) => moment(val).fromNow(),
@@ -96,7 +92,6 @@ const TableList: React.FC<{}> = () => {
             修改
           </a>
           <Divider type="vertical" />
-          <a href="">分配权限</a>
         </>
       ),
     },
@@ -114,7 +109,7 @@ const TableList: React.FC<{}> = () => {
         ]}
         pagination={false}
         search={false}
-        request={params => queryRoles()}
+        request={params => queryPermissions()}
         columns={columns}
       />
       <CreateForm

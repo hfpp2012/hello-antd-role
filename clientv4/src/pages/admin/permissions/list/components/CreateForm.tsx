@@ -22,7 +22,7 @@ const CreateForm: React.FC<CreateFormProps> = props => {
   return (
     <Modal
       destroyOnClose
-      title="新建角色"
+      title="新建权限"
       visible={modalVisible}
       onOk={okHandle}
       onCancel={() => onCancel()}

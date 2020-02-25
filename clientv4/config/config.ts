@@ -124,6 +124,12 @@ export default {
                   path: '/admin/roles',
                   component: './admin/roles/list',
                 },
+                {
+                  name: 'permissions',
+                  icon: 'table',
+                  path: '/admin/permissions',
+                  component: './admin/permissions/list',
+                },
               ],
             },
 
