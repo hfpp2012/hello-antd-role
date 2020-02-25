@@ -13,12 +13,23 @@ import { throwPermissionNotFoundError } from "../../utils/throwError";
  *
  */
 export const index = wrapAsync(
-  async (_req: Request, res: Response): Promise<void> => {
-    const permissions = await Permission.find();
+  async (req: Request, res: Response): Promise<void> => {
+    let { pageSize, current } = req.query;
+
+    [pageSize, current] = [+pageSize, +current];
+
+    const permissions = await Permission.find()
+      .limit(pageSize)
+      .skip((current - 1) * pageSize);
+
+    const count = await Permission.count({});
 
     res.json({
       success: true,
-      data: permissions
+      data: permissions,
+      total: count,
+      current,
+      pageSize
     });
   }
 );

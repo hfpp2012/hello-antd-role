@@ -1,5 +1,4 @@
 import { Schema, model, Document } from "mongoose";
-import mongoosePaginate from "mongoose-paginate";
 
 import { IUserDocument } from "./User";
 import { ICommentDocument } from "./Comment";
@@ -44,7 +43,6 @@ export const postSchema: Schema = new Schema(
   { timestamps: true }
 );
 
-postSchema.plugin(mongoosePaginate);
 postSchema.plugin(require("mongoose-autopopulate"));
 
 const Post = model<IPostDocument>("Post", postSchema);

@@ -21,19 +21,23 @@ import { wrapAsync } from "../helpers/wrap-async";
  */
 export const getPosts = wrapAsync(
   async (req: Request, res: Response): Promise<void> => {
-    const { page } = req.query;
+    let { pageSize, current } = req.query;
 
-    const options = {
-      page: page || 1,
-      limit: 20,
-      sort: { createdAt: -1 }
-    };
+    [pageSize, current] = [+pageSize, +current];
 
-    const posts = await Post.paginate({}, options);
+    const posts = await Post.find()
+      .limit(pageSize)
+      .skip((current - 1) * pageSize)
+      .sort({ createdAt: -1 });
+
+    const count = await Post.count({});
 
     res.json({
       success: true,
-      data: posts
+      data: posts,
+      total: count,
+      current,
+      pageSize
     });
   }
 );
