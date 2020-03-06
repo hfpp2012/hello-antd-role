@@ -250,3 +250,23 @@ export const currentUser = wrapAsync(
     });
   }
 );
+
+/**
+ * Current Permissions
+ *
+ * @Method GET
+ * @URL /api/admin/users/currentPermissions
+ *
+ */
+export const currentPermissions = wrapAsync(
+  async (req: Request, res: Response): Promise<void> => {
+    const admin = req.currentAdmin as IAdminDocument;
+
+    const permissions = admin.roles.map(role => role.permissions);
+
+    res.json({
+      success: true,
+      data: permissions
+    });
+  }
+);

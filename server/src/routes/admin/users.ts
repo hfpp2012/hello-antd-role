@@ -9,7 +9,12 @@ router.post("/login", usersController.postLogin);
 router
   .get("/", checkAdminAuthMiddleware, usersController.index)
   .post("/", checkAdminAuthMiddleware, usersController.addAdmin)
-  .get("/currentUser", checkAdminAuthMiddleware, usersController.currentUser);
+  .get("/currentUser", checkAdminAuthMiddleware, usersController.currentUser)
+  .get(
+    "/currentPermissions",
+    checkAdminAuthMiddleware,
+    usersController.currentPermissions
+  );
 
 router.put("/:id", usersController.updateAdmin);
 

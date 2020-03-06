@@ -5,9 +5,10 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import CreateForm from './components/CreateForm';
 import UpdateForm, { FormValueType } from './components/UpdateForm';
-import { TableListItem, CreateParams } from './data.d';
-import { queryRoles, updateRole, addRole } from './service';
+import { TableListItem, CreateParams, PermissionFormParams } from './data.d';
+import { queryRoles, updateRole, addRole, allocatePermissionForRole } from './service';
 import moment from 'moment';
+import PermissionForm from './components/PermissionForm';
 
 /**
  * 添加节点
@@ -53,10 +54,34 @@ const handleUpdate = async (fields: FormValueType) => {
   }
 };
 
+/**
+ * 分配权限
+ * @param fields
+ */
+const updatePermissions = async (fields: PermissionFormParams) => {
+  const hide = message.loading('正在修改');
+  try {
+    await allocatePermissionForRole({
+      _id: fields._id,
+      permissionIds: fields.permissionIds,
+    });
+    hide();
+
+    message.success('修改成功');
+    return true;
+  } catch (error) {
+    hide();
+    message.error('修改失败请重试！');
+    return false;
+  }
+};
+
 const TableList: React.FC<{}> = () => {
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
+  const [permissionModalVisible, handlePermissionModalVisible] = useState<boolean>(false);
   const [stepFormValues, setStepFormValues] = useState({});
+  const [permisionValues, setPermissionValues] = useState({});
   const actionRef = useRef<ActionType>();
   const columns: ProColumns<TableListItem>[] = [
     {
@@ -70,6 +95,8 @@ const TableList: React.FC<{}> = () => {
     {
       title: '权限列表',
       dataIndex: 'permissions',
+      renderText: (permissions: { nameCn: string }[]) =>
+        permissions.map(permission => permission.nameCn).join(', '),
     },
     {
       title: '创建时间',
@@ -96,7 +123,14 @@ const TableList: React.FC<{}> = () => {
             修改
           </a>
           <Divider type="vertical" />
-          <a href="">分配权限</a>
+          <a
+            onClick={() => {
+              handlePermissionModalVisible(true);
+              setPermissionValues(record);
+            }}
+          >
+            分配权限
+          </a>
         </>
       ),
     },
@@ -144,10 +178,31 @@ const TableList: React.FC<{}> = () => {
           }}
           onCancel={() => {
             handleUpdateModalVisible(false);
-            setStepFormValues({});
+            setPermissionValues({});
           }}
           updateModalVisible={updateModalVisible}
           values={stepFormValues}
+        />
+      ) : null}
+
+      {permisionValues && Object.keys(permisionValues).length ? (
+        <PermissionForm
+          onSubmit={async value => {
+            const success = await updatePermissions(value);
+            if (success) {
+              handlePermissionModalVisible(false);
+              setPermissionValues({});
+              if (actionRef.current) {
+                actionRef.current.reload();
+              }
+            }
+          }}
+          onCancel={() => {
+            handlePermissionModalVisible(false);
+            setPermissionValues({});
+          }}
+          updateModalVisible={permissionModalVisible}
+          values={permisionValues}
         />
       ) : null}
     </PageHeaderWrapper>

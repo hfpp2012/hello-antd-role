@@ -15,7 +15,6 @@ const FormItem = Form.Item;
 
 export interface UpdateFormState {
   formVals: FormValueType;
-  currentStep: number;
 }
 
 const formLayout = {

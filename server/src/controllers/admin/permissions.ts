@@ -24,6 +24,8 @@ export const index = wrapAsync(
 
     const count = await Permission.count({});
 
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
     res.json({
       success: true,
       data: permissions,
