@@ -87,21 +87,19 @@ const PermissionForm: React.FC<UpdateFormProps> = props => {
     }
     return (
       <>
-        <FormItem name="permissionIds" label={false}>
-          <Row>
-            {permissions.map(permission => (
-              <Col key={permission._id} span={8}>
-                <input
-                  type="checkbox"
-                  onChange={handelCheckboxChange}
-                  defaultChecked={!!defaultPermissions.find(p => p._id === permission._id)}
-                  value={permission._id}
-                ></input>
-                {permission.nameCn}
-              </Col>
-            ))}
-          </Row>
-        </FormItem>
+        <Row>
+          {permissions.map(permission => (
+            <Col key={permission._id} span={8}>
+              <input
+                type="checkbox"
+                onChange={handelCheckboxChange}
+                defaultChecked={!!defaultPermissions.find(p => p._id === permission._id)}
+                value={permission._id}
+              ></input>
+              {permission.nameCn}
+            </Col>
+          ))}
+        </Row>
 
         <FormItem name="_id" label={false}>
           <Input type="hidden" />

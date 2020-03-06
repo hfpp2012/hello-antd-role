@@ -14,11 +14,14 @@ import { throwPermissionNotFoundError } from "../../utils/throwError";
  */
 export const index = wrapAsync(
   async (req: Request, res: Response): Promise<void> => {
-    let { pageSize, current } = req.query;
+    let { pageSize, current, order } = req.query;
+
+    console.log(order);
 
     [pageSize, current] = [+pageSize, +current];
 
     const permissions = await Permission.find()
+      .sort({ updatedAt: order === "descend" ? -1 : 1 })
       .limit(pageSize)
       .skip((current - 1) * pageSize);
 

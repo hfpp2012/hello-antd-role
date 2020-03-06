@@ -76,6 +76,7 @@ const TableList: React.FC<{}> = () => {
       title: '更新时间',
       dataIndex: 'updatedAt',
       valueType: 'dateTime',
+      sorter: true,
     },
     {
       title: '操作',
@@ -97,9 +98,17 @@ const TableList: React.FC<{}> = () => {
     },
   ];
 
+  const handleTableChange = (_pagination: any, _filters: any, sorter: any) => {
+    queryPermissions(sorter);
+    if (actionRef.current) {
+      console.log(actionRef.current.fetchMore());
+    }
+  };
+
   return (
     <PageHeaderWrapper>
       <ProTable<TableListItem>
+        onChange={handleTableChange}
         actionRef={actionRef}
         rowKey="_id"
         toolBarRender={(action, { selectedRows }) => [
@@ -107,7 +116,7 @@ const TableList: React.FC<{}> = () => {
             <PlusOutlined /> 新建
           </Button>,
         ]}
-        pagination={{ defaultPageSize: 2 }}
+        pagination={{ defaultPageSize: 10 }}
         search={false}
         request={params => queryPermissions(params)}
         columns={columns}
