@@ -3,6 +3,7 @@ import { Form, Button, Input, Modal, Row, Col, Spin } from 'antd';
 
 import { TableListItem, PermissionFormParams } from '../data.d';
 import { queryPermissions } from '@/pages/admin/permissions/list/service';
+import { TableListItem as PermissionData } from '../../../permissions/list/data.d';
 
 export interface FormValueType extends Partial<TableListItem> {}
 
@@ -31,7 +32,7 @@ const PermissionForm: React.FC<UpdateFormProps> = props => {
     nameCn: props.values.nameCn,
   });
 
-  const [permissions, setPermissions] = useState<FormValueType[]>([]);
+  const [permissions, setPermissions] = useState<PermissionData[]>([]);
 
   const [loading, setLoading] = useState<boolean | undefined>(undefined);
   const [defaultPermissions] = useState(props.values.permissions || []);
