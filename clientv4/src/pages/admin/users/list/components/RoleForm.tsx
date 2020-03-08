@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Button, Input, Modal, Row, Col, Spin } from 'antd';
+import { Form, Button, Input, Modal, Row, Col } from 'antd';
 
-import { TableListItem, PermissionFormParams } from '../data.d';
-import { queryPermissions } from '@/pages/admin/permissions/list/service';
-import { TableListItem as PermissionData } from '../../../permissions/list/data.d';
+import { TableListItem, RoleFormParams } from '../data.d';
+import { queryRoles } from '@/pages/admin/roles/list/service';
+import { TableListItem as RoleData } from '../../../roles/list/data.d';
 
 export interface FormValueType extends Partial<TableListItem> {}
 
 export interface UpdateFormProps {
   onCancel: (flag?: boolean, formVals?: FormValueType) => void;
-  onSubmit: (values: PermissionFormParams) => void;
+  onSubmit: (values: RoleFormParams) => void;
   updateModalVisible: boolean;
   values: Partial<TableListItem>;
 }
@@ -17,7 +17,6 @@ const FormItem = Form.Item;
 
 export interface UpdateFormState {
   formVals: FormValueType;
-  currentStep: number;
 }
 
 const formLayout = {
@@ -25,20 +24,18 @@ const formLayout = {
   wrapperCol: { span: 13 },
 };
 
-const PermissionForm: React.FC<UpdateFormProps> = props => {
+const RoleForm: React.FC<UpdateFormProps> = props => {
   const [formVals, setFormVals] = useState<FormValueType>({
     _id: props.values._id,
-    name: props.values.name,
-    nameCn: props.values.nameCn,
+    username: props.values.username,
+    password: props.values.password,
   });
 
-  const [permissions, setPermissions] = useState<PermissionData[]>([]);
+  const [roles, setRoles] = useState<RoleData[]>([]);
 
   const [loading, setLoading] = useState<boolean | undefined>(undefined);
-  const [defaultPermissions] = useState(props.values.permissions || []);
-  const [permissionIds, setPermissionIds] = useState<string[]>(
-    defaultPermissions.map(permission => permission._id),
-  );
+  const [defaultRoles] = useState(props.values.roles || []);
+  const [roleIds, setRoleIds] = useState<string[]>(defaultRoles.map(role => role._id));
 
   useEffect(() => {
     setLoading(true);
@@ -46,9 +43,9 @@ const PermissionForm: React.FC<UpdateFormProps> = props => {
       if (loading) {
         return;
       }
-      const { success, data } = await queryPermissions();
+      const { success, data } = await queryRoles();
       if (success) {
-        setPermissions(data);
+        setRoles(data);
         setLoading(false);
       }
     }
@@ -69,47 +66,43 @@ const PermissionForm: React.FC<UpdateFormProps> = props => {
 
     setFormVals({ ...formVals, ...fieldsValue });
 
-    const fields = fieldsValue as PermissionFormParams;
+    const fields = fieldsValue as RoleFormParams;
 
-    handleUpdate({ ...fields, permissionIds });
+    handleUpdate({ ...fields, roleIds });
   };
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { checked, value } = e.target;
 
-    if (checked && permissionIds.every(id => id !== value)) {
-      setPermissionIds([...permissionIds, value]);
+    if (checked && roleIds.every(id => id !== value)) {
+      setRoleIds([...roleIds, value]);
     } else {
-      setPermissionIds(permissionIds.filter(id => id !== value));
+      setRoleIds(roleIds.filter(id => id !== value));
     }
   };
 
   const renderContent = () => {
-    if (loading) {
-      return <Spin />;
-    } else {
-      return (
-        <>
-          <Row>
-            {permissions.map(permission => (
-              <Col key={permission._id} span={8}>
-                <input
-                  defaultChecked={!!defaultPermissions.find(p => p._id === permission._id)}
-                  onChange={handleCheckboxChange}
-                  type="checkbox"
-                  value={permission._id}
-                />
-                {permission.nameCn}
-              </Col>
-            ))}
-          </Row>
+    return (
+      <>
+        <Row>
+          {roles.map(role => (
+            <Col key={role._id} span={8}>
+              <input
+                defaultChecked={!!defaultRoles.find(p => p._id === role._id)}
+                onChange={handleCheckboxChange}
+                type="checkbox"
+                value={role._id}
+              />
+              {role.nameCn}
+            </Col>
+          ))}
+        </Row>
 
-          <FormItem name="_id" label={false}>
-            <Input type="hidden" />
-          </FormItem>
-        </>
-      );
-    }
+        <FormItem name="_id" label={false}>
+          <Input type="hidden" />
+        </FormItem>
+      </>
+    );
   };
 
   const renderFooter = () => {
@@ -128,7 +121,7 @@ const PermissionForm: React.FC<UpdateFormProps> = props => {
       width={640}
       bodyStyle={{ padding: '32px 40px 48px' }}
       destroyOnClose
-      title="分配权限"
+      title="分配角色"
       visible={updateModalVisible}
       footer={renderFooter()}
       onCancel={() => handleUpdateModalVisible(false, values)}
@@ -139,8 +132,8 @@ const PermissionForm: React.FC<UpdateFormProps> = props => {
         form={form}
         initialValues={{
           _id: formVals._id,
-          name: formVals.name,
-          nameCn: formVals.nameCn,
+          username: formVals.username,
+          roles: formVals.roles,
         }}
       >
         {renderContent()}
@@ -149,4 +142,4 @@ const PermissionForm: React.FC<UpdateFormProps> = props => {
   );
 };
 
-export default PermissionForm;
+export default RoleForm;

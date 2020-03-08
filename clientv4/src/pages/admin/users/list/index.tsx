@@ -5,12 +5,14 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import CreateForm from './components/CreateForm';
 import UpdateForm, { FormValueType } from './components/UpdateForm';
-import { TableListItem, CreateParams } from './data.d';
-import { queryUsers, updateUser, addUser } from './service';
+import RoleForm from './components/RoleForm';
+import { TableListItem, CreateParams, RoleFormParams } from './data.d';
+import { queryUsers, updateUser, addUser, setRoles } from './service';
 import moment from 'moment';
+import { TableListItem as RoleData } from '../../roles/list/data.d';
 
 /**
- * 添加节点
+ * 添加员工
  * @param fields
  */
 const handleAdd = async (fields: CreateParams) => {
@@ -31,7 +33,7 @@ const handleAdd = async (fields: CreateParams) => {
 };
 
 /**
- * 更新节点
+ * 更新员工
  * @param fields
  */
 const handleUpdate = async (fields: FormValueType) => {
@@ -53,10 +55,34 @@ const handleUpdate = async (fields: FormValueType) => {
   }
 };
 
+/**
+ * 分配角色
+ * @param fields
+ */
+const handleRoles = async (fields: RoleFormParams) => {
+  const hide = message.loading('正在修改');
+  try {
+    await setRoles({
+      _id: fields._id,
+      roleIds: fields.roleIds,
+    });
+    hide();
+
+    message.success('修改成功');
+    return true;
+  } catch (error) {
+    hide();
+    message.error('修改失败请重试！');
+    return false;
+  }
+};
+
 const TableList: React.FC<{}> = () => {
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
+  const [roleModalVisible, handleRoleModalVisible] = useState<boolean>(false);
   const [stepFormValues, setStepFormValues] = useState({});
+  const [roleFormValues, setRoleFormValues] = useState({});
   const actionRef = useRef<ActionType>();
   const columns: ProColumns<TableListItem>[] = [
     {
@@ -66,6 +92,7 @@ const TableList: React.FC<{}> = () => {
     {
       title: '角色',
       dataIndex: 'roles',
+      renderText: (roles: RoleData[]) => roles.map(role => role.nameCn).join(', '),
     },
     {
       title: '是否是超级管理员',
@@ -97,7 +124,14 @@ const TableList: React.FC<{}> = () => {
             修改
           </a>
           <Divider type="vertical" />
-          <a href="">分配角色</a>
+          <a
+            onClick={() => {
+              handleRoleModalVisible(true);
+              setRoleFormValues(record);
+            }}
+          >
+            分配角色
+          </a>
         </>
       ),
     },
@@ -136,7 +170,7 @@ const TableList: React.FC<{}> = () => {
           onSubmit={async value => {
             const success = await handleUpdate(value);
             if (success) {
-              handleModalVisible(false);
+              handleUpdateModalVisible(false);
               setStepFormValues({});
               if (actionRef.current) {
                 actionRef.current.reload();
@@ -149,6 +183,27 @@ const TableList: React.FC<{}> = () => {
           }}
           updateModalVisible={updateModalVisible}
           values={stepFormValues}
+        />
+      ) : null}
+
+      {roleFormValues && Object.keys(roleFormValues).length ? (
+        <RoleForm
+          onSubmit={async value => {
+            const success = await handleRoles(value);
+            if (success) {
+              handleRoleModalVisible(false);
+              setRoleFormValues({});
+              if (actionRef.current) {
+                actionRef.current.reload();
+              }
+            }
+          }}
+          onCancel={() => {
+            handleRoleModalVisible(false);
+            setRoleFormValues({});
+          }}
+          updateModalVisible={roleModalVisible}
+          values={roleFormValues}
         />
       ) : null}
     </PageHeaderWrapper>
