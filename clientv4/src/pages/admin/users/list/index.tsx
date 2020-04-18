@@ -10,6 +10,10 @@ import { TableListItem, CreateParams, RoleFormParams } from './data.d';
 import { queryUsers, updateUser, addUser, setRoles } from './service';
 import moment from 'moment';
 import { TableListItem as RoleData } from '../../roles/list/data.d';
+import { useSelector } from 'dva';
+import { ConnectState } from '@/models/connect';
+import { UserModelState } from '@/models/user';
+import allow from '@/utils/allow';
 
 /**
  * 添加员工
@@ -137,16 +141,26 @@ const TableList: React.FC<{}> = () => {
     },
   ];
 
+  const { currentUser } = useSelector<ConnectState, UserModelState>(state => state.user);
+
+  const renderNewButton = () => {
+    if (currentUser && currentUser.roles && allow(currentUser.roles, 'read admin')) {
+      return (
+        <Button type="primary" onClick={() => handleModalVisible(true)}>
+          <PlusOutlined /> 新建
+        </Button>
+      );
+    } else {
+      return null;
+    }
+  };
+
   return (
     <PageHeaderWrapper>
       <ProTable<TableListItem>
         actionRef={actionRef}
         rowKey="_id"
-        toolBarRender={(action, { selectedRows }) => [
-          <Button type="primary" onClick={() => handleModalVisible(true)}>
-            <PlusOutlined /> 新建
-          </Button>,
-        ]}
+        toolBarRender={(action, { selectedRows }) => [renderNewButton()]}
         pagination={false}
         search={false}
         request={params => queryUsers()}
