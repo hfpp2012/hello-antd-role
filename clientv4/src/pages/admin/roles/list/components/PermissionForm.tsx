@@ -4,6 +4,8 @@ import { Form, Button, Input, Modal, Row, Col, Spin } from 'antd';
 import { TableListItem, PermissionFormParams } from '../data.d';
 import { queryPermissions } from '@/pages/admin/permissions/list/service';
 import { TableListItem as PermissionData } from '../../../permissions/list/data.d';
+import groupBy from 'lodash/groupBy';
+import { keys } from 'lodash';
 
 export interface FormValueType extends Partial<TableListItem> {}
 
@@ -85,25 +87,36 @@ const PermissionForm: React.FC<UpdateFormProps> = props => {
   };
 
   const renderContent = () => {
+    const permissionsByGroup = groupBy(permissions, (permission: PermissionData) => {
+      return permission.name.split(' ').slice(-1)[0];
+    });
+
+    const NAME = { admin: '员工', role: '角色', permission: '权限' };
+
     if (loading) {
       return <Spin />;
     } else {
       return (
         <>
-          <Row>
-            {permissions.map(permission => (
-              <Col key={permission._id} span={8}>
-                <input
-                  defaultChecked={!!defaultPermissions.find(p => p._id === permission._id)}
-                  onChange={handleCheckboxChange}
-                  type="checkbox"
-                  value={permission._id}
-                />
-                {permission.nameCn}
-              </Col>
-            ))}
-          </Row>
-
+          {keys(permissionsByGroup).map(name => (
+            <div key={name}>
+              <Row>{NAME[name]}</Row>
+              <Row>
+                {permissionsByGroup[name].map(permission => (
+                  <Col key={permission._id} span={8}>
+                    <input
+                      defaultChecked={!!defaultPermissions.find(p => p._id === permission._id)}
+                      onChange={handleCheckboxChange}
+                      type="checkbox"
+                      value={permission._id}
+                    />
+                    {permission.nameCn}
+                  </Col>
+                ))}
+              </Row>
+              <br />
+            </div>
+          ))}
           <FormItem name="_id" label={false}>
             <Input type="hidden" />
           </FormItem>

@@ -127,7 +127,7 @@ const TableList: React.FC<{}> = () => {
             </a>
           ) : null}
 
-          {checkPermission('allocate roles') ? (
+          {checkPermission('allocate roles for admin') ? (
             <>
               <Divider type="vertical" />
               <a

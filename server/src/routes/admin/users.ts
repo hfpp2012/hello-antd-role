@@ -34,7 +34,7 @@ router.post("/:id/role", checkAdminAuthMiddleware, usersController.role);
 router.post(
   "/:id/roles",
   checkAdminAuthMiddleware,
-  allow("allocate roles"),
+  allow("allocate roles for admin"),
   usersController.roles
 );
 

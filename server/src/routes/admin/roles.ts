@@ -24,7 +24,7 @@ router.put(
 router.post(
   "/:id/permissions",
   checkAdminAuthMiddleware,
-  allow("allocate permissions"),
+  allow("allocate permissions for role"),
   rolesController.permissions
 );
 
