@@ -10,6 +10,7 @@ import { TableListItem, CreateParams, RoleFormParams } from './data.d';
 import { queryUsers, updateUser, addUser, setRoles } from './service';
 import moment from 'moment';
 import { TableListItem as RoleData } from '../../roles/list/data.d';
+import checkPermission from '@/utils/checkPermission';
 
 /**
  * 添加员工
@@ -137,16 +138,24 @@ const TableList: React.FC<{}> = () => {
     },
   ];
 
+  const renderCreateButton = () => {
+    if (checkPermission('create admin')) {
+      return (
+        <Button type="primary" onClick={() => handleModalVisible(true)}>
+          <PlusOutlined /> 新建
+        </Button>
+      );
+    } else {
+      return null;
+    }
+  };
+
   return (
     <PageHeaderWrapper>
       <ProTable<TableListItem>
         actionRef={actionRef}
         rowKey="_id"
-        toolBarRender={(action, { selectedRows }) => [
-          <Button type="primary" onClick={() => handleModalVisible(true)}>
-            <PlusOutlined /> 新建
-          </Button>,
-        ]}
+        toolBarRender={(action, { selectedRows }) => [renderCreateButton()]}
         pagination={false}
         search={false}
         request={params => queryUsers()}

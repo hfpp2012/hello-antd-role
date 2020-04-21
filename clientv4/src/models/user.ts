@@ -2,19 +2,13 @@ import { Effect } from 'dva';
 import { Reducer } from 'redux';
 
 import { queryCurrent, query as queryUsers } from '@/services/user';
+import { TableListItem as RoleData } from '../pages/admin/roles/list/data.d';
 
 export interface CurrentUser {
   avatar?: string;
-  name?: string;
-  title?: string;
-  group?: string;
-  signature?: string;
-  tags?: {
-    key: string;
-    label: string;
-  }[];
   userid?: string;
-  unreadCount?: number;
+  roles?: RoleData[];
+  isAdmin?: boolean;
 }
 
 export interface UserModelState {

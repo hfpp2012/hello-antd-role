@@ -53,8 +53,8 @@ export const postLogin = wrapAsync(
       success: true,
       data: {
         id: admin.id,
-        token
-      }
+        token,
+      },
     });
   }
 );
@@ -72,7 +72,7 @@ export const index = wrapAsync(
 
     res.json({
       success: true,
-      data: admins
+      data: admins,
     });
   }
 );
@@ -98,7 +98,7 @@ export const addAdmin = wrapAsync(
 
     const newAdmin = new Admin({
       username,
-      password: hashedPassword
+      password: hashedPassword,
     });
 
     const resAdmin = await newAdmin.save();
@@ -107,8 +107,8 @@ export const addAdmin = wrapAsync(
       success: true,
       data: {
         admin: resAdmin,
-        message: "created successfully"
-      }
+        message: "created successfully",
+      },
     });
   }
 );
@@ -147,8 +147,8 @@ export const updateAdmin = wrapAsync(
         success: true,
         data: {
           admin: resAdmin,
-          message: "updated successfully"
-        }
+          message: "updated successfully",
+        },
       });
     } else {
       throwAdminNotFoundError();
@@ -185,8 +185,8 @@ export const role = wrapAsync(
       res.json({
         success: true,
         data: {
-          admin: resAdmin
-        }
+          admin: resAdmin,
+        },
       });
     }
   }
@@ -221,8 +221,8 @@ export const roles = wrapAsync(
       res.json({
         success: true,
         data: {
-          admin: resAdmin
-        }
+          admin: resAdmin,
+        },
       });
     }
   }
@@ -245,8 +245,10 @@ export const currentUser = wrapAsync(
         userid: admin._id,
         name: admin.username,
         avatar:
-          "https://www.qiuzhi99.com/assets/logo-f46be81047e24aa656ea1048aa0c078e6168bb324c3df36506c014c1be677235.png"
-      }
+          "https://www.qiuzhi99.com/assets/logo-f46be81047e24aa656ea1048aa0c078e6168bb324c3df36506c014c1be677235.png",
+        roles: admin.roles,
+        isAdmin: admin.isAdmin,
+      },
     });
   }
 );
