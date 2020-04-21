@@ -7,13 +7,24 @@ const router: Router = express.Router();
 
 router
   .get("/", checkAdminAuthMiddleware, allow("read role"), rolesController.index)
-  .post("/", checkAdminAuthMiddleware, rolesController.addRole);
+  .post(
+    "/",
+    checkAdminAuthMiddleware,
+    allow("create role"),
+    rolesController.addRole
+  );
 
-router.put("/:id", checkAdminAuthMiddleware, rolesController.updateRole);
+router.put(
+  "/:id",
+  checkAdminAuthMiddleware,
+  allow("update role"),
+  rolesController.updateRole
+);
 
 router.post(
   "/:id/permissions",
   checkAdminAuthMiddleware,
+  allow("allocate permissions"),
   rolesController.permissions
 );
 

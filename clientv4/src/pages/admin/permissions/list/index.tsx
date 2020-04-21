@@ -107,7 +107,7 @@ const TableList: React.FC<{}> = () => {
             <PlusOutlined /> 新建
           </Button>,
         ]}
-        pagination={{ defaultPageSize: 2 }}
+        pagination={{ defaultPageSize: 8 }}
         search={false}
         request={params => queryPermissions(params)}
         columns={columns}

@@ -14,12 +14,28 @@ router
     allow("read admin"),
     usersController.index
   )
-  .post("/", checkAdminAuthMiddleware, usersController.addAdmin)
+  .post(
+    "/",
+    checkAdminAuthMiddleware,
+    allow("create admin"),
+    usersController.addAdmin
+  )
   .get("/currentUser", checkAdminAuthMiddleware, usersController.currentUser);
 
-router.put("/:id", usersController.updateAdmin);
+router.put(
+  "/:id",
+  checkAdminAuthMiddleware,
+  allow("update admin"),
+  usersController.updateAdmin
+);
 
-router.post("/:id/role", usersController.role);
-router.post("/:id/roles", usersController.roles);
+router.post("/:id/role", checkAdminAuthMiddleware, usersController.role);
+
+router.post(
+  "/:id/roles",
+  checkAdminAuthMiddleware,
+  allow("allocate roles"),
+  usersController.roles
+);
 
 export default router;

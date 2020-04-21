@@ -19,6 +19,7 @@ export const index = wrapAsync(
     [pageSize, current] = [+pageSize, +current];
 
     const permissions = await Permission.find()
+      .sort({ createdAt: "desc" })
       .limit(pageSize)
       .skip((current - 1) * pageSize);
 
@@ -31,7 +32,7 @@ export const index = wrapAsync(
       data: permissions,
       total: count,
       current,
-      pageSize
+      pageSize,
     });
   }
 );
@@ -49,7 +50,7 @@ export const addPermission = wrapAsync(
 
     const newPermission = new Permission({
       name,
-      nameCn
+      nameCn,
     });
 
     const resPermission = await newPermission.save();
@@ -58,8 +59,8 @@ export const addPermission = wrapAsync(
       success: true,
       data: {
         permission: resPermission,
-        message: "created successfully"
-      }
+        message: "created successfully",
+      },
     });
   }
 );
@@ -90,8 +91,8 @@ export const updatePermission = wrapAsync(
         success: true,
         data: {
           permission: resPermission,
-          message: "updated successfully"
-        }
+          message: "updated successfully",
+        },
       });
     } else {
       throwPermissionNotFoundError();
@@ -118,8 +119,8 @@ export const deletePermission = wrapAsync(
       res.json({
         success: true,
         data: {
-          message: "deleted successfully"
-        }
+          message: "deleted successfully",
+        },
       });
     } else {
       throwPermissionNotFoundError();
