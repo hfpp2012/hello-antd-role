@@ -10,6 +10,7 @@ import { queryRoles, updateRole, addRole, setPermissions } from './service';
 import moment from 'moment';
 import PermissionForm from './components/PermissionForm';
 import { TableListItem as PermissionData } from '../../permissions/list/data.d';
+import checkPermission from '@/utils/checkPermission';
 
 /**
  * 添加角色
@@ -115,38 +116,53 @@ const TableList: React.FC<{}> = () => {
       valueType: 'option',
       render: (_, record) => (
         <>
-          <a
-            onClick={() => {
-              handleUpdateModalVisible(true);
-              setStepFormValues(record);
-            }}
-          >
-            修改
-          </a>
-          <Divider type="vertical" />
-          <a
-            onClick={() => {
-              handlePermissionModalVisible(true);
-              setPermissionFormValues(record);
-            }}
-          >
-            分配权限
-          </a>
+          {checkPermission('update role') ? (
+            <a
+              onClick={() => {
+                handleUpdateModalVisible(true);
+                setStepFormValues(record);
+              }}
+            >
+              修改
+            </a>
+          ) : null}
+
+          {checkPermission('allocate permissions') ? (
+            <>
+              <Divider type="vertical" />
+              <a
+                onClick={() => {
+                  handlePermissionModalVisible(true);
+                  setPermissionFormValues(record);
+                }}
+              >
+                分配权限
+              </a>
+            </>
+          ) : null}
         </>
       ),
     },
   ];
+
+  const renderCreateButton = () => {
+    if (checkPermission('create role')) {
+      return (
+        <Button type="primary" onClick={() => handleModalVisible(true)}>
+          <PlusOutlined /> 新建
+        </Button>
+      );
+    } else {
+      return null;
+    }
+  };
 
   return (
     <PageHeaderWrapper>
       <ProTable<TableListItem>
         actionRef={actionRef}
         rowKey="_id"
-        toolBarRender={(action, { selectedRows }) => [
-          <Button type="primary" onClick={() => handleModalVisible(true)}>
-            <PlusOutlined /> 新建
-          </Button>,
-        ]}
+        toolBarRender={(action, { selectedRows }) => [renderCreateButton()]}
         pagination={false}
         search={false}
         request={params => queryRoles()}

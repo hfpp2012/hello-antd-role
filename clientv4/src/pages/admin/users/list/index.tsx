@@ -116,23 +116,30 @@ const TableList: React.FC<{}> = () => {
       valueType: 'option',
       render: (_, record) => (
         <>
-          <a
-            onClick={() => {
-              handleUpdateModalVisible(true);
-              setStepFormValues(record);
-            }}
-          >
-            修改
-          </a>
-          <Divider type="vertical" />
-          <a
-            onClick={() => {
-              handleRoleModalVisible(true);
-              setRoleFormValues(record);
-            }}
-          >
-            分配角色
-          </a>
+          {checkPermission('update admin') ? (
+            <a
+              onClick={() => {
+                handleUpdateModalVisible(true);
+                setStepFormValues(record);
+              }}
+            >
+              修改
+            </a>
+          ) : null}
+
+          {checkPermission('allocate roles') ? (
+            <>
+              <Divider type="vertical" />
+              <a
+                onClick={() => {
+                  handleRoleModalVisible(true);
+                  setRoleFormValues(record);
+                }}
+              >
+                分配角色
+              </a>
+            </>
+          ) : null}
         </>
       ),
     },

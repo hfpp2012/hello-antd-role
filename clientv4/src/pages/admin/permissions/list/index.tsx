@@ -1,5 +1,5 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Divider, message } from 'antd';
+import { Button, message } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
@@ -8,6 +8,7 @@ import UpdateForm, { FormValueType } from './components/UpdateForm';
 import { TableListItem, CreateParams } from './data.d';
 import { queryPermissions, updatePermission, addPermission } from './service';
 import moment from 'moment';
+import checkPermission from '@/utils/checkPermission';
 
 /**
  * 添加节点
@@ -83,30 +84,39 @@ const TableList: React.FC<{}> = () => {
       valueType: 'option',
       render: (_, record) => (
         <>
-          <a
-            onClick={() => {
-              handleUpdateModalVisible(true);
-              setStepFormValues(record);
-            }}
-          >
-            修改
-          </a>
-          <Divider type="vertical" />
+          {checkPermission('update permission') ? (
+            <a
+              onClick={() => {
+                handleUpdateModalVisible(true);
+                setStepFormValues(record);
+              }}
+            >
+              修改
+            </a>
+          ) : null}
         </>
       ),
     },
   ];
+
+  const renderCreateButton = () => {
+    if (checkPermission('create role')) {
+      return (
+        <Button type="primary" onClick={() => handleModalVisible(true)}>
+          <PlusOutlined /> 新建
+        </Button>
+      );
+    } else {
+      return null;
+    }
+  };
 
   return (
     <PageHeaderWrapper>
       <ProTable<TableListItem>
         actionRef={actionRef}
         rowKey="_id"
-        toolBarRender={(action, { selectedRows }) => [
-          <Button type="primary" onClick={() => handleModalVisible(true)}>
-            <PlusOutlined /> 新建
-          </Button>,
-        ]}
+        toolBarRender={(action, { selectedRows }) => [renderCreateButton()]}
         pagination={{ defaultPageSize: 8 }}
         search={false}
         request={params => queryPermissions(params)}
