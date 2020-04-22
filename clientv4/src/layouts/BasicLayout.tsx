@@ -10,7 +10,7 @@ import ProLayout, {
   DefaultFooter,
 } from '@ant-design/pro-layout';
 import { formatMessage } from 'umi-plugin-react/locale';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'umi';
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
@@ -21,6 +21,7 @@ import RightContent from '@/components/GlobalHeader/RightContent';
 import { ConnectState } from '@/models/connect';
 import { isAntDesignPro, getAuthorityFromRouter } from '@/utils/utils';
 import logo from '../assets/logo.svg';
+import request from '@/utils/request';
 
 const noMatch = (
   <Result
@@ -124,12 +125,21 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
    * constructor
    */
 
+  const [menuData, setMenuData] = useState([]);
+
   useEffect(() => {
     if (dispatch) {
       dispatch({
         type: 'user/fetchCurrent',
       });
     }
+
+    async function fetchMenus() {
+      const response = await request('/admin/menus');
+      setMenuData(response || []);
+    }
+
+    fetchMenus();
   }, []);
   /**
    * init variables
@@ -181,7 +191,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
         );
       }}
       footerRender={footerRender}
-      menuDataRender={menuDataRender}
+      menuDataRender={() => menuData}
       rightContentRender={() => <RightContent />}
       {...props}
       {...settings}
