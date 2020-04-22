@@ -135,8 +135,8 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
     }
 
     async function fetchMenus() {
-      const response = await request('/admin/menus');
-      setMenuData(response || []);
+      const { data } = await request('/admin/menus/fetch');
+      setMenuData(data || []);
     }
 
     fetchMenus();
