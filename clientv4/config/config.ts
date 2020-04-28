@@ -130,6 +130,12 @@ export default {
                   path: '/admin/permissions',
                   component: './admin/permissions/list',
                 },
+                {
+                  name: 'menus',
+                  icon: 'table',
+                  path: '/admin/menus',
+                  component: './admin/menus/list',
+                },
               ],
             },
 

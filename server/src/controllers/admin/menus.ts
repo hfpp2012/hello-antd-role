@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 
 import { wrapAsync } from "../../helpers/wrap-async";
+import Menu from "../../models/Menu";
+import { throwMenuNotFoundError } from "../../utils/throwError";
 
 /**
  * Fetch menu list
@@ -35,5 +37,100 @@ export const fetch = wrapAsync(
         // ....
       ],
     });
+  }
+);
+
+/**
+ * menu list
+ *
+ * @Method GET
+ * @URL /api/admin/menus
+ *
+ */
+export const index = wrapAsync(
+  async (req: Request, res: Response): Promise<void> => {
+    let { pageSize, current } = req.query;
+
+    [pageSize, current] = [+pageSize, +current];
+
+    const menus = await Menu.find()
+      .sort({ createdAt: "desc" })
+      .limit(pageSize)
+      .skip((current - 1) * pageSize);
+
+    const count = await Menu.count({});
+
+    // await new Promise(resolve => setTimeout(resolve, 1000));
+
+    res.json({
+      success: true,
+      data: menus,
+      total: count,
+      current,
+      pageSize,
+    });
+  }
+);
+
+/**
+ * Add menu
+ *
+ * @Method POST
+ * @URL /api/admin/menus
+ *
+ */
+export const addMenu = wrapAsync(
+  async (req: Request, res: Response): Promise<void> => {
+    const { name, path } = req.body;
+
+    const newMenu = new Menu({
+      path,
+      name,
+    });
+
+    const resMenu = await newMenu.save();
+
+    res.json({
+      success: true,
+      data: {
+        menu: resMenu,
+        message: "created successfully",
+      },
+    });
+  }
+);
+
+/**
+ * Update menu
+ *
+ * @Method PUT
+ * @URL /api/admin/menus/:id
+ *
+ */
+export const updateMenu = wrapAsync(
+  async (req: Request, res: Response): Promise<void> => {
+    const { name, path } = req.body;
+
+    const { id } = req.params;
+
+    const menu = await Menu.findById(id);
+
+    if (menu) {
+      const resMenu = await Menu.findByIdAndUpdate(
+        id,
+        { name, path },
+        { new: true }
+      );
+
+      res.json({
+        success: true,
+        data: {
+          menu: resMenu,
+          message: "updated successfully",
+        },
+      });
+    } else {
+      throwMenuNotFoundError();
+    }
   }
 );

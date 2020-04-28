@@ -5,5 +5,10 @@ import checkAdminAuthMiddleware from "../../middlewares/admin/check-auth.middlew
 const router: Router = express.Router();
 
 router.get("/fetch", checkAdminAuthMiddleware, menusRouter.fetch);
+router
+  .get("/", checkAdminAuthMiddleware, menusRouter.index)
+  .post("/", checkAdminAuthMiddleware, menusRouter.addMenu);
+
+router.put("/:id", checkAdminAuthMiddleware, menusRouter.updateMenu);
 
 export default router;

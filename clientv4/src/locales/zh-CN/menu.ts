@@ -5,6 +5,7 @@ export default {
   'menu.admin': '授权管理',
   'menu.admin.users': '员工管理',
   'menu.admin.roles': '角色管理',
+  'menu.admin.menus': '菜单管理',
   'menu.admin.permissions': '权限管理',
   'menu.login': '登录',
   'menu.register': '注册',

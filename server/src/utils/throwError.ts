@@ -21,6 +21,10 @@ export const throwPermissionNotFoundError = () => {
   throw new HttpException(NOT_FOUND, "Permission not found");
 };
 
+export const throwMenuNotFoundError = () => {
+  throw new HttpException(NOT_FOUND, "Menu not found");
+};
+
 export const throwActionNotAllowedError = () => {
   throw new HttpException(UNAUTHORIZED, "Action not allowed");
 };
