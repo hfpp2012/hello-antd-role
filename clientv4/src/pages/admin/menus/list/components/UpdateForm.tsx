@@ -56,6 +56,9 @@ const UpdateForm: React.FC<UpdateFormProps> = props => {
         <FormItem name="path" label="路径" rules={[{ required: true, message: '请输入路径！' }]}>
           <Input placeholder="请输入路径！" />
         </FormItem>
+        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="父类菜单" name="parent">
+          <Input placeholder="请输入父类菜单编号！" />
+        </FormItem>
         <FormItem name="_id" label={false}>
           <Input type="hidden" />
         </FormItem>

@@ -81,11 +81,12 @@ export const index = wrapAsync(
  */
 export const addMenu = wrapAsync(
   async (req: Request, res: Response): Promise<void> => {
-    const { name, path } = req.body;
+    const { name, path, parent } = req.body;
 
     const newMenu = new Menu({
       path,
       name,
+      parent,
     });
 
     const resMenu = await newMenu.save();
@@ -109,7 +110,7 @@ export const addMenu = wrapAsync(
  */
 export const updateMenu = wrapAsync(
   async (req: Request, res: Response): Promise<void> => {
-    const { name, path } = req.body;
+    const { name, path, parent } = req.body;
 
     const { id } = req.params;
 
@@ -118,7 +119,7 @@ export const updateMenu = wrapAsync(
     if (menu) {
       const resMenu = await Menu.findByIdAndUpdate(
         id,
-        { name, path },
+        { name, path, parent },
         { new: true }
       );
 

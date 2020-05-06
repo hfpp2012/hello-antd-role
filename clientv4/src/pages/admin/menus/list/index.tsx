@@ -11,7 +11,7 @@ import moment from 'moment';
 import checkPermission from '@/utils/checkPermission';
 
 /**
- * 添加节点
+ * 添加菜单
  * @param fields
  */
 const handleAdd = async (fields: CreateParams) => {
@@ -20,6 +20,7 @@ const handleAdd = async (fields: CreateParams) => {
     await addMenu({
       name: fields.name,
       path: fields.path,
+      parent: fields.parent,
     });
     hide();
     message.success('添加成功');
@@ -32,7 +33,7 @@ const handleAdd = async (fields: CreateParams) => {
 };
 
 /**
- * 更新节点
+ * 更新菜单
  * @param fields
  */
 const handleUpdate = async (fields: FormValueType) => {
@@ -42,6 +43,7 @@ const handleUpdate = async (fields: FormValueType) => {
       _id: fields._id,
       name: fields.name,
       path: fields.path,
+      parent: fields.parent,
     });
     hide();
 
@@ -61,12 +63,21 @@ const TableList: React.FC<{}> = () => {
   const actionRef = useRef<ActionType>();
   const columns: ProColumns<TableListItem>[] = [
     {
+      title: '编号',
+      dataIndex: '_id',
+    },
+    {
       title: '名称',
       dataIndex: 'name',
     },
     {
       title: '路径',
       dataIndex: 'path',
+    },
+    {
+      title: '父类菜单',
+      dataIndex: 'parent',
+      renderText: (menu: TableListItem) => menu && menu.name,
     },
     {
       title: '创建时间',

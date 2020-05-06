@@ -46,6 +46,10 @@ const CreateForm: React.FC<CreateFormProps> = props => {
         >
           <Input placeholder="请输入路径！" />
         </FormItem>
+
+        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="父类菜单" name="parent">
+          <Input placeholder="请输入父类菜单编号！" />
+        </FormItem>
       </Form>
     </Modal>
   );

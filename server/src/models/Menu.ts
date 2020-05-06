@@ -15,9 +15,16 @@ const menuSchema: Schema = new Schema(
       type: String,
       required: [true, "Path must not be empty"],
     },
+    parent: {
+      type: Schema.Types.ObjectId,
+      ref: "Menu",
+      autopopulate: true,
+    },
   },
   { timestamps: true }
 );
+
+menuSchema.plugin(require("mongoose-autopopulate"));
 
 const Menu: Model<IMenuDocument> = model<IMenuDocument>("Menu", menuSchema);
 
