@@ -21,6 +21,7 @@ const handleAdd = async (fields: CreateParams) => {
       name: fields.name,
       path: fields.path,
       parent: fields.parent,
+      nameCn: fields.nameCn,
     });
     hide();
     message.success('添加成功');
@@ -44,6 +45,7 @@ const handleUpdate = async (fields: FormValueType) => {
       name: fields.name,
       path: fields.path,
       parent: fields.parent,
+      nameCn: fields.nameCn,
     });
     hide();
 
@@ -69,6 +71,10 @@ const TableList: React.FC<{}> = () => {
     {
       title: '名称',
       dataIndex: 'name',
+    },
+    {
+      title: '中文描述',
+      dataIndex: 'nameCn',
     },
     {
       title: '路径',

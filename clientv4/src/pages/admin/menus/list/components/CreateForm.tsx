@@ -37,6 +37,9 @@ const CreateForm: React.FC<CreateFormProps> = props => {
         >
           <Input placeholder="请输入名称！" />
         </FormItem>
+        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="中文描述" name="nameCn">
+          <Input placeholder="请输入中文描述！" />
+        </FormItem>
         <FormItem
           labelCol={{ span: 5 }}
           wrapperCol={{ span: 15 }}

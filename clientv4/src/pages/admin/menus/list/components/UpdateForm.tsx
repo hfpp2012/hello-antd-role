@@ -28,6 +28,8 @@ const UpdateForm: React.FC<UpdateFormProps> = props => {
     _id: props.values._id,
     name: props.values.name,
     path: props.values.path,
+    nameCn: props.values.nameCn,
+    parent: props.values.parent,
   });
 
   const [form] = Form.useForm();
@@ -53,10 +55,13 @@ const UpdateForm: React.FC<UpdateFormProps> = props => {
         <FormItem name="name" label="名称" rules={[{ required: true, message: '请输入名称！' }]}>
           <Input placeholder="请输入名称！" />
         </FormItem>
+        <FormItem label="中文描述" name="nameCn">
+          <Input placeholder="请输入中文描述！" />
+        </FormItem>
         <FormItem name="path" label="路径" rules={[{ required: true, message: '请输入路径！' }]}>
           <Input placeholder="请输入路径！" />
         </FormItem>
-        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="父类菜单" name="parent">
+        <FormItem label="父类菜单" name="parent">
           <Input placeholder="请输入父类菜单编号！" />
         </FormItem>
         <FormItem name="_id" label={false}>
@@ -95,6 +100,8 @@ const UpdateForm: React.FC<UpdateFormProps> = props => {
           _id: formVals._id,
           name: formVals.name,
           path: formVals.path,
+          nameCn: formVals.nameCn,
+          parent: formVals.parent,
         }}
       >
         {renderContent()}
