@@ -136,3 +136,20 @@ export const updateMenu = wrapAsync(
     }
   }
 );
+
+/**
+ * Fetch selected menu list
+ *
+ * @Method GET
+ * @URL /api/admin/menus/selectMenus
+ *
+ */
+export const selectMenus = wrapAsync(
+  async (_req: Request, res: Response): Promise<void> => {
+    const menus = Menu.find();
+    res.json({
+      success: true,
+      data: menus,
+    });
+  }
+);
