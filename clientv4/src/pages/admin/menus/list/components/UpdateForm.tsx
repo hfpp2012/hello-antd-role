@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Form, Button, Input, Modal, Select } from 'antd';
 import request from '@/utils/request';
 
-import { TableListItem } from '../data.d';
+import { TableListItem, UpdateParams } from '../data.d';
 
 export interface FormValueType extends Partial<TableListItem> {}
 
 export interface UpdateFormProps {
   onCancel: (flag?: boolean, formVals?: FormValueType) => void;
-  onSubmit: (values: FormValueType) => void;
+  onSubmit: (values: UpdateParams) => void;
   updateModalVisible: boolean;
   values: Partial<TableListItem>;
 }
@@ -49,7 +49,7 @@ const UpdateForm: React.FC<UpdateFormProps> = props => {
 
     setFormVals({ ...formVals, ...fieldsValue });
 
-    handleUpdate(fieldsValue);
+    handleUpdate(fieldsValue as UpdateParams);
   };
 
   const [menus, setMenus] = useState([]);
@@ -79,7 +79,7 @@ const UpdateForm: React.FC<UpdateFormProps> = props => {
         </FormItem>
         <FormItem label="父类菜单" name="parentId">
           <Select
-            defaultValue={formVals._id}
+            defaultValue={formVals && formVals.parent ? formVals.parent._id : undefined}
             allowClear={true}
             placeholder="请选择父类菜单！"
             style={{ width: '100%' }}

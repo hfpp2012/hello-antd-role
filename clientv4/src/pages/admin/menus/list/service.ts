@@ -1,6 +1,5 @@
 import request from '@/utils/request';
-import { TableListParams, CreateParams } from './data.d';
-import { FormValueType } from './components/UpdateForm';
+import { TableListParams, CreateParams, UpdateParams } from './data.d';
 
 export async function queryMenus(params?: TableListParams) {
   return request('/admin/menus', {
@@ -17,7 +16,7 @@ export async function addMenu(params: CreateParams) {
   });
 }
 
-export async function updateMenu(params: FormValueType) {
+export async function updateMenu(params: UpdateParams) {
   return request(`/admin/menus/${params._id}`, {
     method: 'PUT',
     data: {

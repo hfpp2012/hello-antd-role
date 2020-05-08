@@ -4,8 +4,8 @@ import React, { useState, useRef } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import CreateForm from './components/CreateForm';
-import UpdateForm, { FormValueType } from './components/UpdateForm';
-import { TableListItem, CreateParams } from './data.d';
+import UpdateForm from './components/UpdateForm';
+import { TableListItem, CreateParams, UpdateParams } from './data.d';
 import { queryMenus, updateMenu, addMenu } from './service';
 import moment from 'moment';
 import checkPermission from '@/utils/checkPermission';
@@ -37,7 +37,7 @@ const handleAdd = async (fields: CreateParams) => {
  * 更新菜单
  * @param fields
  */
-const handleUpdate = async (fields: FormValueType) => {
+const handleUpdate = async (fields: UpdateParams) => {
   const hide = message.loading('正在修改');
   try {
     await updateMenu({

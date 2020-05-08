@@ -2,9 +2,8 @@ export interface TableListItem {
   _id: string;
   name: string;
   path: string;
-  parent: string | TableListItem;
+  parent: TableListItem;
   nameCn: string;
-  parentId: string;
 }
 
 export interface TableListPagination {
@@ -28,4 +27,13 @@ export interface CreateParams {
   path: string;
   parent: string;
   nameCn: string;
+}
+
+export interface UpdateParams {
+  _id: string;
+  name: string;
+  path: string;
+  nameCn: string;
+  parentId?: string;
+  parent?: string;
 }

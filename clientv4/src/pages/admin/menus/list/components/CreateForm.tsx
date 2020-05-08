@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Form, Input, Modal, Select } from 'antd';
-import { TableListItem } from '../data.d';
+import { TableListItem, CreateParams } from '../data.d';
 import request from '@/utils/request';
 
 const FormItem = Form.Item;
@@ -9,7 +9,7 @@ const { Option } = Select;
 
 interface CreateFormProps {
   modalVisible: boolean;
-  onSubmit: (fieldsValue: TableListItem) => void;
+  onSubmit: (fieldsValue: CreateParams) => void;
   onCancel: () => void;
 }
 
@@ -18,7 +18,7 @@ const CreateForm: React.FC<CreateFormProps> = props => {
 
   const { modalVisible, onSubmit: handleAdd, onCancel } = props;
   const okHandle = async () => {
-    const fieldsValue = (await form.validateFields()) as TableListItem;
+    const fieldsValue = (await form.validateFields()) as CreateParams;
     form.resetFields();
     handleAdd(fieldsValue);
   };
