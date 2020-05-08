@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Input, Modal, Select } from 'antd';
 import { TableListItem } from '../data.d';
+import request from '@/utils/request';
 
 const FormItem = Form.Item;
 
@@ -21,6 +22,20 @@ const CreateForm: React.FC<CreateFormProps> = props => {
     form.resetFields();
     handleAdd(fieldsValue);
   };
+
+  const [menus, setMenus] = useState([]);
+
+  useEffect(() => {
+    async function getSelectedMenus() {
+      const response = await request('/admin/menus/selectMenus');
+      if (response.success) {
+        setMenus(response.data);
+      }
+    }
+
+    getSelectedMenus();
+  }, []);
+
   return (
     <Modal
       destroyOnClose
@@ -54,7 +69,11 @@ const CreateForm: React.FC<CreateFormProps> = props => {
 
         <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="父类菜单" name="parent">
           <Select allowClear={true} placeholder="请选择父类菜单！" style={{ width: '100%' }}>
-            <Option value="5ea7e0a1cee00026719c9e6a">授权管理</Option>
+            {menus.map((menu: TableListItem) => (
+              <Option key={menu._id} value={menu._id}>
+                {menu.nameCn}
+              </Option>
+            ))}
           </Select>
         </FormItem>
       </Form>

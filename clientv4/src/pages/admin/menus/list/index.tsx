@@ -44,7 +44,7 @@ const handleUpdate = async (fields: FormValueType) => {
       _id: fields._id,
       name: fields.name,
       path: fields.path,
-      parent: fields.parent,
+      parent: fields.parentId,
       nameCn: fields.nameCn,
     });
     hide();
@@ -65,10 +65,6 @@ const TableList: React.FC<{}> = () => {
   const actionRef = useRef<ActionType>();
   const columns: ProColumns<TableListItem>[] = [
     {
-      title: '编号',
-      dataIndex: '_id',
-    },
-    {
       title: '名称',
       dataIndex: 'name',
     },
@@ -83,7 +79,7 @@ const TableList: React.FC<{}> = () => {
     {
       title: '父类菜单',
       dataIndex: 'parent',
-      renderText: (menu: TableListItem) => menu && menu.name,
+      renderText: (menu: TableListItem) => menu && menu.nameCn,
     },
     {
       title: '创建时间',

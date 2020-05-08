@@ -146,7 +146,7 @@ export const updateMenu = wrapAsync(
  */
 export const selectMenus = wrapAsync(
   async (_req: Request, res: Response): Promise<void> => {
-    const menus = Menu.find();
+    const menus = await Menu.find();
     res.json({
       success: true,
       data: menus,

@@ -2,8 +2,9 @@ export interface TableListItem {
   _id: string;
   name: string;
   path: string;
-  parent: string;
+  parent: string | TableListItem;
   nameCn: string;
+  parentId: string;
 }
 
 export interface TableListPagination {

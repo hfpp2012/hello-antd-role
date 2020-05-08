@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { Form, Button, Input, Modal } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Form, Button, Input, Modal, Select } from 'antd';
+import request from '@/utils/request';
 
 import { TableListItem } from '../data.d';
 
@@ -12,6 +13,8 @@ export interface UpdateFormProps {
   values: Partial<TableListItem>;
 }
 const FormItem = Form.Item;
+
+const { Option } = Select;
 
 export interface UpdateFormState {
   formVals: FormValueType;
@@ -49,6 +52,19 @@ const UpdateForm: React.FC<UpdateFormProps> = props => {
     handleUpdate(fieldsValue);
   };
 
+  const [menus, setMenus] = useState([]);
+
+  useEffect(() => {
+    async function getSelectedMenus() {
+      const response = await request('/admin/menus/selectMenus');
+      if (response.success) {
+        setMenus(response.data);
+      }
+    }
+
+    getSelectedMenus();
+  }, []);
+
   const renderContent = () => {
     return (
       <>
@@ -61,9 +77,21 @@ const UpdateForm: React.FC<UpdateFormProps> = props => {
         <FormItem name="path" label="路径" rules={[{ required: true, message: '请输入路径！' }]}>
           <Input placeholder="请输入路径！" />
         </FormItem>
-        <FormItem label="父类菜单" name="parent">
-          <Input placeholder="请输入父类菜单编号！" />
+        <FormItem label="父类菜单" name="parentId">
+          <Select
+            defaultValue={formVals._id}
+            allowClear={true}
+            placeholder="请选择父类菜单！"
+            style={{ width: '100%' }}
+          >
+            {menus.map((menu: TableListItem) => (
+              <Option key={menu._id} value={menu._id}>
+                {menu.nameCn}
+              </Option>
+            ))}
+          </Select>
         </FormItem>
+
         <FormItem name="_id" label={false}>
           <Input type="hidden" />
         </FormItem>
