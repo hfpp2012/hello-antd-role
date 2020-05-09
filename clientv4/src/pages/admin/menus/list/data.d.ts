@@ -4,6 +4,7 @@ export interface TableListItem {
   path: string;
   parent: TableListItem;
   nameCn: string;
+  parentId: string;
 }
 
 export interface TableListPagination {

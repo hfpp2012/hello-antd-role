@@ -33,6 +33,7 @@ const UpdateForm: React.FC<UpdateFormProps> = props => {
     path: props.values.path,
     nameCn: props.values.nameCn,
     parent: props.values.parent,
+    parentId: props.values.parentId,
   });
 
   const [form] = Form.useForm();
@@ -78,12 +79,7 @@ const UpdateForm: React.FC<UpdateFormProps> = props => {
           <Input placeholder="请输入路径！" />
         </FormItem>
         <FormItem label="父类菜单" name="parentId">
-          <Select
-            defaultValue={formVals && formVals.parent ? formVals.parent._id : undefined}
-            allowClear={true}
-            placeholder="请选择父类菜单！"
-            style={{ width: '100%' }}
-          >
+          <Select allowClear={true} placeholder="请选择父类菜单！" style={{ width: '100%' }}>
             {menus.map((menu: TableListItem) => (
               <Option key={menu._id} value={menu._id}>
                 {menu.nameCn}
@@ -130,6 +126,7 @@ const UpdateForm: React.FC<UpdateFormProps> = props => {
           path: formVals.path,
           nameCn: formVals.nameCn,
           parent: formVals.parent,
+          parentId: formVals.parentId,
         }}
       >
         {renderContent()}
