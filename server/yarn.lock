@@ -3189,6 +3189,13 @@ mongoose-exists@^0.8.7:
     "@lykmapipo/mongoose-common" ">=0.26.6"
     lodash ">=4.17.15"
 
+mongoose-lean-virtuals@^0.6.2:
+  version "0.6.2"
+  resolved "https://registry.npm.taobao.org/mongoose-lean-virtuals/download/mongoose-lean-virtuals-0.6.2.tgz#f416f156808f538e4d71f8b79d39058ef4c4faf7"
+  integrity sha1-9BbxVoCPU45Ncfi3nTkFjvTE+vc=
+  dependencies:
+    mpath "0.5.x"
+
 mongoose-legacy-pluralize@1.0.2:
   version "1.0.2"
   resolved "https://registry.npm.taobao.org/mongoose-legacy-pluralize/download/mongoose-legacy-pluralize-1.0.2.tgz#3ba9f91fa507b5186d399fb40854bff18fb563e4"
@@ -3246,6 +3253,11 @@ morgan@^1.9.1:
     depd "~1.1.2"
     on-finished "~2.3.0"
     on-headers "~1.0.1"
+
+mpath@0.5.x:
+  version "0.5.2"
+  resolved "https://registry.npm.taobao.org/mpath/download/mpath-0.5.2.tgz#b1eac586dffb5175d2f51ca9aacba35d9940dd41"
+  integrity sha1-serFht/7UXXS9RypqsujXZlA3UE=
 
 mpath@0.6.0:
   version "0.6.0"

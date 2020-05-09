@@ -3,6 +3,9 @@ import { Schema, model, Model, Document } from "mongoose";
 export interface IMenuDocument extends Document {
   name: string;
   path: string;
+  fullName: string;
+  children: IMenuDocument;
+  parent: IMenuDocument;
 }
 
 const menuSchema: Schema = new Schema(
@@ -22,10 +25,34 @@ const menuSchema: Schema = new Schema(
       autopopulate: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
+menuSchema.virtual("children", {
+  ref: "Menu",
+  localField: "_id",
+  foreignField: "parent",
+  // count: true, // Set `count: true` on the virtual
+});
+
+// menuSchema.virtual("children").get(function (this: IMenuDocument) {
+//   return Menu.find({ parent: this._id });
+// });
+
+menuSchema.virtual("parentId").get(function (this: IMenuDocument) {
+  return this.parent && this.parent._id;
+});
+
+// menuSchema.methods.children = function (): DocumentQuery<
+//   IMenuDocument[],
+//   IMenuDocument,
+//   {}
+// > {
+//   return Menu.find({ parent: this._id });
+// };
+
 menuSchema.plugin(require("mongoose-autopopulate"));
+menuSchema.plugin(require("mongoose-lean-virtuals"));
 
 const Menu: Model<IMenuDocument> = model<IMenuDocument>("Menu", menuSchema);
 

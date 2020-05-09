@@ -13,29 +13,11 @@ import { throwMenuNotFoundError } from "../../utils/throwError";
  */
 export const fetch = wrapAsync(
   async (_req: Request, res: Response): Promise<void> => {
+    const menus = await Menu.find({ parent: null }).populate("children");
+    console.log(menus);
     res.json({
       success: true,
-      data: [
-        {
-          path: "/dashboard",
-          name: "dashboard",
-          children: [
-            {
-              path: "/dashboard/analysis",
-              name: "analysis",
-            },
-            {
-              path: "/dashboard/monitor",
-              name: "monitor",
-            },
-            {
-              path: "/dashboard/workplace",
-              name: "workplace",
-            },
-          ],
-        },
-        // ....
-      ],
+      data: menus,
     });
   }
 );
@@ -54,6 +36,8 @@ export const index = wrapAsync(
     [pageSize, current] = [+pageSize, +current];
 
     const menus = await Menu.find()
+      .lean({ virtuals: true })
+      .populate("parent")
       .sort({ createdAt: "desc" })
       .limit(pageSize)
       .skip((current - 1) * pageSize);
