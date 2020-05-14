@@ -54,6 +54,8 @@ export const index = wrapAsync(
     [pageSize, current] = [+pageSize, +current];
 
     const menus = await Menu.find()
+      .lean({ virtuals: true })
+      .populate("parent")
       .sort({ createdAt: "desc" })
       .limit(pageSize)
       .skip((current - 1) * pageSize);
