@@ -3,6 +3,8 @@ import { Request, Response } from "express";
 import { wrapAsync } from "../../helpers/wrap-async";
 import Menu from "../../models/Menu";
 import { throwMenuNotFoundError } from "../../utils/throwError";
+import { IAdminDocument } from "../../models/Admin";
+import { checkMenu } from "../../utils/admin/check-menu";
 
 /**
  * Fetch menu list
@@ -12,12 +14,16 @@ import { throwMenuNotFoundError } from "../../utils/throwError";
  *
  */
 export const fetch = wrapAsync(
-  async (_req: Request, res: Response): Promise<void> => {
+  async (req: Request, res: Response): Promise<void> => {
     const menus = await Menu.find({ parent: null }).populate("children");
+
+    const admin = req.currentAdmin as IAdminDocument;
+
+    console.log(menus);
 
     res.json({
       success: true,
-      data: menus,
+      data: menus.filter((menu) => checkMenu(menu.permission, admin)),
     });
   }
 );

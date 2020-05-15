@@ -4,6 +4,7 @@ export interface IMenuDocument extends Document {
   name: string;
   path: string;
   parent: IMenuDocument;
+  permission: string;
 }
 
 const menuSchema: Schema = new Schema(
