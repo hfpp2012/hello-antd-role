@@ -67,6 +67,10 @@ const CreateForm: React.FC<CreateFormProps> = props => {
           <Input placeholder="请输入路径！" />
         </FormItem>
 
+        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="权限" name="permission">
+          <Input placeholder="请输入权限！" />
+        </FormItem>
+
         <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="父类菜单" name="parent">
           <Select allowClear={true} placeholder="请选择父类菜单！" style={{ width: '100%' }}>
             {menus.map((menu: TableListItem) => (

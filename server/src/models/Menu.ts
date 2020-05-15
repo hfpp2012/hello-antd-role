@@ -13,6 +13,7 @@ const menuSchema: Schema = new Schema(
       required: [true, "Name must not be empty"],
     },
     nameCn: String,
+    permission: String,
     path: {
       type: String,
       required: [true, "Path must not be empty"],

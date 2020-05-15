@@ -78,6 +78,11 @@ const UpdateForm: React.FC<UpdateFormProps> = props => {
         <FormItem name="path" label="路径" rules={[{ required: true, message: '请输入路径！' }]}>
           <Input placeholder="请输入路径！" />
         </FormItem>
+
+        <FormItem label="权限" name="permission">
+          <Input placeholder="请输入权限！" />
+        </FormItem>
+
         <FormItem label="父类菜单" name="parentId">
           <Select allowClear={true} placeholder="请选择父类菜单！" style={{ width: '100%' }}>
             {menus.map((menu: TableListItem) => (
@@ -127,6 +132,7 @@ const UpdateForm: React.FC<UpdateFormProps> = props => {
           nameCn: formVals.nameCn,
           parent: formVals.parent,
           parentId: formVals.parentId,
+          permission: formVals.permission,
         }}
       >
         {renderContent()}

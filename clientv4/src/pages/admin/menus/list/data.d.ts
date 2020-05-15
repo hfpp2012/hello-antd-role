@@ -5,6 +5,7 @@ export interface TableListItem {
   parent: TableListItem;
   nameCn: string;
   parentId: string;
+  permission: string;
 }
 
 export interface TableListPagination {
@@ -28,6 +29,7 @@ export interface CreateParams {
   path: string;
   parent: string;
   nameCn: string;
+  permission: string;
 }
 
 export interface UpdateParams {
@@ -37,4 +39,5 @@ export interface UpdateParams {
   nameCn: string;
   parentId?: string;
   parent?: string;
+  permission: string;
 }

@@ -22,6 +22,7 @@ const handleAdd = async (fields: CreateParams) => {
       path: fields.path,
       parent: fields.parent,
       nameCn: fields.nameCn,
+      permission: fields.permission,
     });
     hide();
     message.success('添加成功');
@@ -46,6 +47,7 @@ const handleUpdate = async (fields: UpdateParams) => {
       path: fields.path,
       parent: fields.parentId,
       nameCn: fields.nameCn,
+      permission: fields.permission,
     });
     hide();
 
@@ -75,6 +77,10 @@ const TableList: React.FC<{}> = () => {
     {
       title: '路径',
       dataIndex: 'path',
+    },
+    {
+      title: '权限',
+      dataIndex: 'permission',
     },
     {
       title: '父类菜单',
