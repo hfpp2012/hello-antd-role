@@ -23,8 +23,14 @@ const menuSchema: Schema = new Schema(
       autopopulate: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
+
+menuSchema.virtual("children", {
+  ref: "Menu",
+  localField: "_id",
+  foreignField: "parent",
+});
 
 menuSchema.virtual("parentId").get(function (this: IMenuDocument) {
   return this.parent && this.parent._id;
