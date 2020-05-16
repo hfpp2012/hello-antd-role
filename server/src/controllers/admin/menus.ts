@@ -23,7 +23,7 @@ export const fetch = wrapAsync(
 
     res.json({
       success: true,
-      data: menus.filter((menu) => checkMenu(menu.permission, admin)),
+      data: checkMenu(menus, admin),
     });
   }
 );
