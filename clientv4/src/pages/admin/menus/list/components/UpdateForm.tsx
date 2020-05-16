@@ -34,6 +34,7 @@ const UpdateForm: React.FC<UpdateFormProps> = props => {
     nameCn: props.values.nameCn,
     parent: props.values.parent,
     parentId: props.values.parentId,
+    permission: props.values.permission,
   });
 
   const [form] = Form.useForm();

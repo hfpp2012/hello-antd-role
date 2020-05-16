@@ -19,8 +19,6 @@ export const fetch = wrapAsync(
 
     const admin = req.currentAdmin as IAdminDocument;
 
-    console.log(menus);
-
     res.json({
       success: true,
       data: checkMenu(menus, admin),

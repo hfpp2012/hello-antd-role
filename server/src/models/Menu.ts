@@ -29,10 +29,13 @@ const menuSchema: Schema = new Schema(
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
+// https://mongoosejs.com/docs/populate.html#populate-virtuals
 menuSchema.virtual("children", {
   ref: "Menu",
   localField: "_id",
   foreignField: "parent",
+  options: { populate: "children" },
+  // options: { sort: { sort: -1 }, limit: 5 }
 });
 
 menuSchema.virtual("parentId").get(function (this: IMenuDocument) {
