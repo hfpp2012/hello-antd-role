@@ -19,11 +19,11 @@ export const fetch = wrapAsync(
 
     const admin = req.currentAdmin as IAdminDocument;
 
-    console.log(menus);
+    console.log(JSON.stringify(checkMenu(menus, admin)));
 
     res.json({
       success: true,
-      data: menus.filter((menu) => checkMenu(menu.permission, admin)),
+      data: checkMenu(menus, admin),
     });
   }
 );
